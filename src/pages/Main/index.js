@@ -10,6 +10,7 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    fail: false,
   };
   componentDidMount() {
     const repositories = localStorage.getItem('repositories');
@@ -28,6 +29,7 @@ export default class Main extends Component {
   handleInputChange = e => {
     this.setState({
       newRepo: e.target.value,
+      fail: false,
     });
   };
   handleSubmit = async e => {
@@ -36,25 +38,33 @@ export default class Main extends Component {
     this.setState({
       loading: true,
     });
-    const response = await api.get(`/repos/${newRepo}`);
-    const data = {
-      name: response.data.full_name,
-    };
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-      loading: false,
-    });
+    try {
+      const response = await api.get(`/repos/${newRepo}`);
+
+      const data = {
+        name: response.data.full_name,
+      };
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+        loading: false,
+      });
+    } catch (err) {
+      this.setState({
+        loading: false,
+        fail: true,
+      });
+    }
   };
   render() {
-    const { newRepo, loading, repositories } = this.state;
+    const { newRepo, loading, repositories, fail } = this.state;
     return (
       <Container>
         <h1>
           <FaGitAlt />
           Repositorios
         </h1>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} fail={fail ? 1 : 0}>
           <input
             type="text"
             placeholder="Adicionar repositorio"
