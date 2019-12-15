@@ -13,6 +13,7 @@ export default class Main extends Component {
     fail: false,
   };
   componentDidMount() {
+    //localStorage.removeItem('repositories');
     const repositories = localStorage.getItem('repositories');
     if (repositories) {
       this.setState({
@@ -40,6 +41,10 @@ export default class Main extends Component {
     });
     try {
       const response = await api.get(`/repos/${newRepo}`);
+
+      if (repositories.find(r => r.name === response.data.full_name)) {
+        throw new Error('Repositório duplicado');
+      }
 
       const data = {
         name: response.data.full_name,
