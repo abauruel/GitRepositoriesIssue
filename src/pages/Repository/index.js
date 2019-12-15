@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Container from '../../components/Content';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 
-import { Owner, Loading, IssueList, ButtonFilter } from './styles';
+import { Owner, Loading, IssueList } from './styles';
 
 export default class Repository extends Component {
   static propTyes = {
