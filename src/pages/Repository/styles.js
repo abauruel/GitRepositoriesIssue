@@ -38,7 +38,36 @@ export const Owner = styled.div`
     text-align: center;
     max-width: 400px;
   }
+
+  div {
+    margin-top: 20px;
+    flex-direction: row;
+    button {
+      margin: 0 10px;
+      padding: 5px;
+      background: #eee;
+      border-radius: 4px;
+      border-style: none;
+    }
+  }
 `;
+export const ButtonFilter = styled.button.attrs(props => ({
+  name: props.name,
+}))`
+  &[name] {
+    background: ${props => {
+      switch (props.filter) {
+        case 'open':
+          return 'green';
+        case 'closed':
+          return 'red';
+        default:
+          return '#eee';
+      }
+    }};
+  }
+`;
+
 export const IssueList = styled.ul`
   padding-top: 30px;
   margin-top: 30px;
